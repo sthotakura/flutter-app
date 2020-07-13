@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktok_clone/account/logandsignup.dart';
 
 import 'home.dart';
 
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
             .textTheme
             .apply(bodyColor: Colors.white, displayColor: Colors.white),
       ),
-      home: MyHome(),
+      home: LoginPage(),
     );
   }
 }

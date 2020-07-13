@@ -30,6 +30,7 @@ dependencies:
   cached_network_image:
   video_player:
   chewie:
+  font_awesome_flutter: ^8.8.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
