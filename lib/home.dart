@@ -23,7 +23,10 @@ class _MyHomeState extends State<MyHome> {
         backgroundColor: Colors.black,
         body: PageView(
           controller: _controller,
-          children: [Home(), VideoRec()],
+          children: [
+            Home(),
+            VideoRec(),
+          ],
         ));
   }
 }

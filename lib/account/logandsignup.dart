@@ -1,8 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tiktok_clone/home.dart';
-import 'package:tiktok_clone/home_final.dart';
 
 import 'bubble_indication.dart';
 
@@ -16,6 +16,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage>
     with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  bool setBusy = false;
 
   final FocusNode myFocusNodeEmailLogin = FocusNode();
   final FocusNode myFocusNodePasswordLogin = FocusNode();
@@ -53,80 +55,84 @@ class _LoginPageState extends State<LoginPage>
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
-        key: _scaffoldKey,
-        body: NotificationListener<OverscrollIndicatorNotification>(
-          // ignore: missing_return
-          onNotification: (overscroll) {
-            overscroll.disallowGlow();
-          },
-          child: SingleChildScrollView(
-            child: Stack(children: <Widget>[
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height >= 775.0
-                    ? MediaQuery.of(context).size.height
-                    : 775.0,
-                decoration: new BoxDecoration(
-                  gradient: new LinearGradient(
-                      colors: [Colors.black, Colors.black],
-                      begin: const FractionalOffset(0.0, 0.0),
-                      end: const FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 75.0),
-                      child: new Image(
-                        width: 250.0,
-                        height: 150.0,
-                        fit: BoxFit.fill,
-                        image: new NetworkImage(
-                            'https://images.firstpost.com/fpimages/1200x800/fixed/jpg/2019/04/TikTok-logo-720.jpg'),
-                      ),
+    return setBusy
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : new Scaffold(
+            key: _scaffoldKey,
+            body: NotificationListener<OverscrollIndicatorNotification>(
+              // ignore: missing_return
+              onNotification: (overscroll) {
+                overscroll.disallowGlow();
+              },
+              child: SingleChildScrollView(
+                child: Stack(children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height >= 775.0
+                        ? MediaQuery.of(context).size.height
+                        : 775.0,
+                    decoration: new BoxDecoration(
+                      gradient: new LinearGradient(
+                          colors: [Colors.black, Colors.black],
+                          begin: const FractionalOffset(0.0, 0.0),
+                          end: const FractionalOffset(1.0, 1.0),
+                          stops: [0.0, 1.0],
+                          tileMode: TileMode.clamp),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20.0),
-                      child: _buildMenuBar(context),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: PageView(
-                        controller: _pageController,
-                        onPageChanged: (i) {
-                          if (i == 0) {
-                            setState(() {
-                              right = Colors.white;
-                              left = Colors.pink[800];
-                            });
-                          } else if (i == 1) {
-                            setState(() {
-                              right = Colors.pink[800];
-                              left = Colors.white;
-                            });
-                          }
-                        },
-                        children: <Widget>[
-                          new ConstrainedBox(
-                            constraints: const BoxConstraints.expand(),
-                            child: _buildSignIn(context),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(top: 75.0),
+                          child: new Image(
+                            width: 250.0,
+                            height: 150.0,
+                            fit: BoxFit.fill,
+                            image: new NetworkImage(
+                                'https://images.firstpost.com/fpimages/1200x800/fixed/jpg/2019/04/TikTok-logo-720.jpg'),
                           ),
-                          new ConstrainedBox(
-                            constraints: const BoxConstraints.expand(),
-                            child: _buildSignUp(context),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 20.0),
+                          child: _buildMenuBar(context),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: PageView(
+                            controller: _pageController,
+                            onPageChanged: (i) {
+                              if (i == 0) {
+                                setState(() {
+                                  right = Colors.white;
+                                  left = Colors.pink[800];
+                                });
+                              } else if (i == 1) {
+                                setState(() {
+                                  right = Colors.pink[800];
+                                  left = Colors.white;
+                                });
+                              }
+                            },
+                            children: <Widget>[
+                              new ConstrainedBox(
+                                constraints: const BoxConstraints.expand(),
+                                child: _buildSignIn(context),
+                              ),
+                              new ConstrainedBox(
+                                constraints: const BoxConstraints.expand(),
+                                child: _buildSignUp(context),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ]),
               ),
-            ]),
-          ),
-        ));
+            ));
   }
 
   @override
@@ -349,8 +355,16 @@ class _LoginPageState extends State<LoginPage>
                       ),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(builder: (context) => MyHome()));
+                      setState(() {
+                        setBusy = true;
+                      });
+                      FirebaseAuth.instance
+                          .signInWithEmailAndPassword(
+                              email: signInEmail, password: signInPassword)
+                          .then((value) {
+                        Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => MyHome()));
+                      });
                     }),
               ),
             ],
@@ -655,7 +669,18 @@ class _LoginPageState extends State<LoginPage>
                           fontFamily: "WorkSansBold"),
                     ),
                   ),
-                  onPressed: () => {},
+                  onPressed: () {
+                    setState(() {
+                      setBusy = true;
+                    });
+                    FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: signUpEmail, password: signUpPassword)
+                        .then((value) {
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => MyHome()));
+                    });
+                  },
                 ),
               ),
             ],
