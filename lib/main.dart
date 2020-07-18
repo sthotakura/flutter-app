@@ -1,9 +1,26 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/account/logandsignup.dart';
+import 'package:tiktok_clone/video_recorder.dart';
 
 import 'home.dart';
 
-void main() {
+List<CameraDescription> cameras = [];
+Future<void> setCameras() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    logError(e.code, e.description);
+  }
+}
+
+Future<void> main() async {
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    cameras = await availableCameras();
+  } on CameraException catch (e) {
+    logError(e.code, e.description);
+  }
   runApp(MyApp());
 }
 
@@ -20,7 +37,7 @@ class MyApp extends StatelessWidget {
             .textTheme
             .apply(bodyColor: Colors.white, displayColor: Colors.white),
       ),
-      home: LoginPage(),
+      home: MyHome(),
     );
   }
 }

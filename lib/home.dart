@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tiktok_clone/home_final.dart';
+import 'package:tiktok_clone/video_recorder.dart';
 
 class MyHome extends StatefulWidget {
   @override
@@ -7,11 +8,22 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
+  PageController _controller = PageController(
+    initialPage: 0,
+  );
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
-      body: Home(),
-    );
+        backgroundColor: Colors.black,
+        body: PageView(
+          controller: _controller,
+          children: [Home(), VideoRec()],
+        ));
   }
 }
