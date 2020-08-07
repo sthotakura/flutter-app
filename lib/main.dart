@@ -1,9 +1,8 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/account/logandsignup.dart';
+import 'package:tiktok_clone/Onboardingpage/mainpage.dart';
 import 'package:tiktok_clone/video_recorder.dart';
 
-import 'home.dart';
 
 List<CameraDescription> cameras = [];
 Future<void> setCameras() async {
@@ -38,7 +37,7 @@ class MyApp extends StatelessWidget {
             .textTheme
             .apply(bodyColor: Colors.white, displayColor: Colors.white),
       ),
-      home: LoginPage(),
+      home: OnboardingSc(),
     );
   }
 }

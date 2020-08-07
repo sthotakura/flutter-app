@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../tik_tok_icons.dart';
+import 'package:tiktok_clone/chat/pages/chatpage.dart';
+import 'package:tiktok_clone/profile/mainfile.dart';
 
 class BottomToolbar extends StatelessWidget {
   static const double NavigationIconSize = 20.0;
@@ -14,14 +14,26 @@ class BottomToolbar extends StatelessWidget {
             margin: EdgeInsets.only(left: 10.0),
             width: CreateButtonWidth,
             decoration: BoxDecoration(
-                color: Color.fromARGB(255, 250, 45, 108),
+                color: Color.fromARGB(
+                  255,
+                  250,
+                  45,
+                  108,
+                ),
                 borderRadius: BorderRadius.circular(7.0))),
         Container(
-            margin: EdgeInsets.only(right: 10.0),
-            width: CreateButtonWidth,
-            decoration: BoxDecoration(
-                color: Color.fromARGB(255, 32, 211, 234),
-                borderRadius: BorderRadius.circular(7.0))),
+          margin: EdgeInsets.only(right: 10.0),
+          width: CreateButtonWidth,
+          decoration: BoxDecoration(
+            color: Color.fromARGB(
+              255,
+              32,
+              211,
+              234,
+            ),
+            borderRadius: BorderRadius.circular(7.0),
+          ),
+        ),
         Center(
             child: Container(
           height: double.infinity,
@@ -43,9 +55,24 @@ class BottomToolbar extends StatelessWidget {
         Icon(Icons.home, color: Colors.white, size: NavigationIconSize),
         Icon(Icons.search, color: Colors.white, size: NavigationIconSize),
         customCreateIcon,
-        Icon(Icons.message, color: Colors.white, size: NavigationIconSize),
-        Icon(Icons.person_outline,
-            color: Colors.white, size: NavigationIconSize)
+        InkWell(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ChatPage(),
+                ),
+              );
+            },
+            child: Icon(Icons.message,
+                color: Colors.white, size: NavigationIconSize)),
+        InkWell(
+          onTap: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => Profile1(),),);
+          },
+          child: Icon(Icons.person_outline,
+              color: Colors.white, size: NavigationIconSize),
+        )
       ],
     );
   }

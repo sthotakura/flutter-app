@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:tiktok_clone/tik_tok_icons.dart';
 
 class ActionsToolbar extends StatelessWidget {
   // Full dimensions of an action
